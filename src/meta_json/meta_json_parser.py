@@ -1,5 +1,5 @@
 import re
-from typing import Dict, List, Any, Union, Optional
+from typing import Dict, List, Any, Union
 
 
 class MetaJsonParser:
@@ -31,17 +31,16 @@ class MetaJsonParser:
         else:
             if self._parse_datetimes(response):
                 return "datetime"
-            return str(type(response)).replace("<class '", "").replace("'>", "")
+            return re.sub("(<class '|'>)", "", str(type(response)))
 
-    def structure_parser(self, response: Any) -> Optional[List]:
+    def structure_parser(self, response: Any) -> List:
         """Given a JSON response, create a one describing its model instead."""
         if isinstance(response, dict):
-            return [
-                    list(response.keys()),
-                    [self.structure_parser(i) for i in response.values()] 
-                    ]
+            # fmt: off
+            return [list(response.keys()),
+                    self.structure_parser(response.values())]
+            # fmt: on
         elif isinstance(response, list):
             return [self.structure_parser(r) for r in response]
-        # else:
-            # continue
-
+        else:
+            return []
