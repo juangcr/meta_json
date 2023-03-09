@@ -10,13 +10,12 @@ def test_meta_json_datetimes():
     data = [
 	    "2014-12-09T13:50:51.644000Z",
 	    "2014-12-20T21:17:56.891000Z",
-	    "https://swapi.dev/api/people/1/"
+	    "https://api.dev/api/1/"
         ]
 
     meta = MetaJsonParser()
-    assert meta._parse_datetimes(data[0]) == True
-    assert meta._parse_datetimes(data[1]) == True
-    assert meta._parse_datetimes(data[2]) == False
+    results = [meta._parse_datetimes(d) for d in data]
+    assert results == [True, True, False] 
 
 
 def test_meta_json_flat_list():
@@ -24,7 +23,9 @@ def test_meta_json_flat_list():
 	    "item_1",
 	    "item_2",
 	    ["item_3", "item_4", "item_5"],
-	    ["item_6"]
+	    ["item_6"],
+	    [],
+	    [[], []]
         ]
 
     output_data = [
@@ -41,38 +42,20 @@ def test_meta_json_flat_list():
     assert result == output_data 
 
 
-def test_meta_json_types():
+def test_meta_json_types_one_layer():
     input_data = {
-		"name": "Luke Skywalker",
-		"height": 1.72,
+		"name": "John Doe",
+		"height": 1.73,
 		"mass": 77,
 		"hair_color": "blond",
 		"skin_color": "fair",
 		"eye_color": "blue",
-		"birth_year": "19BBY",
+		"birth_year": "1970",
 		"gender": "male",
-		"homeworld": "https://swapi.dev/api/planets/1/",
-		"films": [
-			"https://swapi.dev/api/films/2/",
-			"https://swapi.dev/api/films/6/",
-			"https://swapi.dev/api/films/3/",
-			"https://swapi.dev/api/films/1/",
-			"https://swapi.dev/api/films/7/"
-	    ],
-		"species": [
-			"https://swapi.dev/api/species/1/"
-    	],
-		"vehicles": [
-			"https://swapi.dev/api/vehicles/14/",
-			"https://swapi.dev/api/vehicles/30/"
-	    ],
-		"starships": [
-			"https://swapi.dev/api/starships/12/",
-			"https://swapi.dev/api/starships/22/"
-    	],
-		"created": "2014-12-09T13:50:51.644000Z",
-		"edited": "2014-12-20T21:17:56.891000Z",
-		"url": "https://swapi.dev/api/people/1/"
+		"species": ["Human"],
+		"created": "2023-03-09T13:50:41.674000Z",
+		"edited": "2023-03-20T21:17:53.791000Z",
+		"url": "https://www.url.dev"
     }
 
     output_data = {
@@ -84,25 +67,7 @@ def test_meta_json_types():
 	    "eye_color": "str",
 	    "birth_year": "str",
 	    "gender": "str",
-	    "homeworld": "str",
-	    "films": [
-		    "str",
-		    "str",
-		    "str",
-		    "str",
-		    "str"
-	    ],
-	    "species": [
-	        "str"	
-	    ],
-	    "vehicles": [
-	        "str",
-	        "str"
-	    ],
-	    "starships": [
-	        "str",
-	        "str"
-	    ],
+	    "species": ["str"],
     	"created": "datetime",
 	    "edited": "datetime",
     	"url": "str" 
@@ -112,38 +77,20 @@ def test_meta_json_types():
     meta_types = meta.types_parser(input_data)
     assert meta_types == output_data
 
-def test_meta_json_structure():
+def test_meta_json_attribute_one_layer():
     input_data = {
-		"name": "Luke Skywalker",
-		"height": 1.72,
+		"name": "John Doe",
+		"height": 1.73,
 		"mass": 77,
 		"hair_color": "blond",
 		"skin_color": "fair",
 		"eye_color": "blue",
-		"birth_year": "19BBY",
+		"birth_year": "1970",
 		"gender": "male",
-		"homeworld": "https://swapi.dev/api/planets/1/",
-		"films": [
-			"https://swapi.dev/api/films/2/",
-			"https://swapi.dev/api/films/6/",
-			"https://swapi.dev/api/films/3/",
-			"https://swapi.dev/api/films/1/",
-			"https://swapi.dev/api/films/7/"
-	    ],
-		"species": [
-			"https://swapi.dev/api/species/1/"
-    	],
-		"vehicles": [
-			"https://swapi.dev/api/vehicles/14/",
-			"https://swapi.dev/api/vehicles/30/"
-	    ],
-		"starships": [
-			"https://swapi.dev/api/starships/12/",
-			"https://swapi.dev/api/starships/22/"
-    	],
-		"created": "2014-12-09T13:50:51.644000Z",
-		"edited": "2014-12-20T21:17:56.891000Z",
-		"url": "https://swapi.dev/api/people/1/"
+		"species": ["Human"],
+		"created": "2023-03-09T13:50:41.674000Z",
+		"edited": "2023-03-20T21:17:53.791000Z",
+		"url": "https://www.url.dev"
     }
 
     output_data = [[
@@ -155,16 +102,56 @@ def test_meta_json_structure():
 	    "eye_color",
 	    "birth_year",
 	    "gender",
-	    "homeworld",
-	    "films",
 	    "species",
-	    "vehicles",
-	    "starships",
     	"created",
 	    "edited",
     	"url" 
         ], []]
     meta = MetaJsonParser()
-    meta_types = meta.structure_parser(input_data)
-    assert meta_types == output_data
+    meta_attr = meta.attribute_parser(input_data)
+    assert meta_attr == output_data
 
+
+def test_meta_json_attributes_multiple_layers():
+    input_data = {
+            "layer1_a": "text",
+            "layer1_b": 3.14,
+            "layer1_c": {
+                "layer2_a": 42,
+                "layer2_b": "more text"
+                },
+            "layer1_d": ["bit", "more", "text"],
+            "layer1_e": {
+                "layer2_c": [
+                    {"layer3_a": "deep"},
+                    {"layer3_b": "deeper"}
+                    ],
+                "layer2_d": {
+                    "layer3_c": {"layer4_a": "deepest"}
+                    }
+                }
+            }
+
+    output_data = [
+            [
+                "layer1_a",
+                "layer1_b",
+                "layer1_c",
+                "layer1_d",
+                "layer1_e",
+                ],
+            [
+                'layer2_a',
+                'layer2_b',
+                'layer2_c',
+                'layer2_d',
+                'layer3_a',
+                'layer3_b',
+                'layer3_c',
+                'layer4_a'
+                ]
+            ]
+
+    meta = MetaJsonParser()
+    meta_attr = meta.attribute_parser(input_data)
+    assert meta_attr == output_data
