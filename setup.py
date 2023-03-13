@@ -10,20 +10,14 @@ def get_long_description():
 
 setup(
     name="meta-json",
-    # Versions should comply with PEP 440:
-    # https://www.python.org/dev/peps/pep-0440/
-    # https://packaging.python.org/guides/single-sourcing-package-version/
-    version="0.0.1.dev1",
+    version="0.0.1",
     description="Extract metadata from a deserialized JSON.",
     long_description=get_long_description(),
     long_description_content_type="text/markdown",
-    url="https://github.com/juangcr/metadata_json",
+    url="https://github.com/juangcr/meta_json",
     author="Juan Cortés",
     author_email="juang.cortes@outlook.com",
     classifiers=[
-        #   3 - Alpha
-        #   4 - Beta
-        #   5 - Production/Stable
         "Development Status :: 3 - Alpha",
         "License :: OSI Approved :: BSD License",
         "Programming Language :: Python :: 3",
@@ -37,14 +31,12 @@ setup(
     # install_requires=[""],
     extras_require={
         "test": [
+            "coverage",
             "pytest",
             "black",
             "flake8",
             "mypy"
             ]
-    },
-    project_urls={
-        "Source": "https://github.com/juangcr/meta_json/",
     },
 )
 
