@@ -1,5 +1,6 @@
 import re
 from typing import Dict, List, Any, Union
+from itertools import chain
 
 
 class MetaJsonParser:
@@ -21,48 +22,6 @@ class MetaJsonParser:
         """
         rgx = re.compile(r"\d{4}\-[0-1]\d\-[0-3]\d")
         return bool(re.match(rgx, value))
-
-    def _list_flattener(self, vals: List) -> List:
-        """Chain nested lists into a new one.
-
-        Attributes
-        ----------
-        vals: list
-            List with nested lists.
-
-        Returns
-        -------
-        list
-            List with all previous nested values.
-        """
-        new_list = []
-        for val in vals:
-            if isinstance(val, list):
-                new_list.extend(self._list_flattener(val))
-            else:
-                new_list.append(val)
-        return new_list
-
-    def _soft_flatten(self, vals: List) -> List:
-        """Turn double braces into one.
-
-        Attributes
-        ----------
-        vals: list
-            List with nested lists.
-
-        Returns
-        -------
-        list
-            List with reduced braces.
-        """
-        new_list = []
-        for val in vals:
-            if not isinstance(val, list):
-                new_list.append(val)
-            else:
-                new_list.extend(val)
-        return new_list
 
     def types_parser(self, response: Any) -> Union[Union[Dict, List], str]:
         """Given a JSON response, create a dictionary with the value types
@@ -87,6 +46,24 @@ class MetaJsonParser:
                 return "datetime"
             return re.sub("(<class '|'>)", "", str(type(response)))
 
+    def _hard_flatten(self, vals: List) -> List:
+        """Chain nested lists into a new one.
+
+        Attributes
+        ----------
+        vals: list
+            List with nested lists.
+
+        Returns
+        -------
+        list
+            List with all previous nested values.
+        """
+        # fmt: off
+        flat_list = map(lambda x: self._hard_flatten(x) if isinstance(
+            x, list) else [x], vals)
+        return [*chain(*flat_list)]
+
     def attribute_parser(self, response: Any) -> List:
         """Given a JSON response, create a list grouping its attributes.
 
@@ -105,11 +82,26 @@ class MetaJsonParser:
             return [list(response.keys()),
                     self.attribute_parser(list(response.values()))]
         elif isinstance(response, list):
-            return self._list_flattener(
+            return self._hard_flatten(
                     [self.attribute_parser(r) for r in response])
         else:
             return []
-        # fmt: on
+
+    def _soft_flatten(self, vals: List) -> List:
+        """Turn double braces into one.
+
+        Attributes
+        ----------
+        vals: list
+            List with nested lists.
+
+        Returns
+        -------
+        list
+            List with reduced braces.
+        """
+        new_list = map(lambda x: x if isinstance(x, list) else [x], vals)
+        return [*chain(*new_list)]
 
     def layer_parser(self, response: Any) -> List:
         """Given a JSON response, create a list showing attributes'
@@ -150,8 +142,7 @@ class MetaJsonParser:
         while len(parsed_layer) > 0:
             layers.append([p.pop(0) for p in parsed_layer if len(p) > 0])
             bring_next = [p[0] for p in parsed_layer if len(p) > 0]
-            filtered_layer = [*filter(lambda x: x != [], bring_next)]
-            parsed_layer = self._soft_flatten(filtered_layer)
+            parsed_layer = [*chain(*filter(lambda x: x != [], bring_next))]
         return layers
 
     @staticmethod

@@ -70,8 +70,14 @@ def test_flat_list():
         ]
 
     meta = MetaJsonParser()
-    result = meta._list_flattener(EXAMPLE_1)
+    result = meta._hard_flatten(EXAMPLE_1)
     assert result == output_data 
+
+
+def test_flat_empty_list():
+    meta = MetaJsonParser()
+    result = meta._hard_flatten([])
+    assert result == []
 
 
 def test_partial_flat_list():
@@ -90,6 +96,12 @@ def test_partial_flat_list():
     meta = MetaJsonParser()
     result = meta._soft_flatten(EXAMPLE_1)
     assert result == output_data 
+
+
+def test_partial_flat_empty_list():
+    meta = MetaJsonParser()
+    result = meta._soft_flatten([])
+    assert result == []
 
 
 def test_types_one_layer():
@@ -111,6 +123,12 @@ def test_types_one_layer():
     meta = MetaJsonParser()
     meta_types = meta.types_parser(EXAMPLE_2)
     assert meta_types == output_data
+
+
+def test_types_empty():
+    meta = MetaJsonParser()
+    meta_types = meta.types_parser({})
+    assert meta_types == {}
 
 
 def test_attribute_one_layer():
@@ -160,6 +178,12 @@ def test_attributes_multiple_layers():
     assert meta_attr == output_data
 
 
+def test_attribute_empty():
+    meta = MetaJsonParser()
+    meta_attr = meta.attribute_parser({})
+    assert meta_attr == [[], []]
+
+
 def test_layer_parser():
     output_data = [ 
             ["layer1_a", []],
@@ -170,12 +194,18 @@ def test_layer_parser():
                 ["layer2_c", [["layer3_a", []], ["layer3_b", []]]],
                 ["layer2_d", [["layer3_c", [["layer4_a", []]]]]]
                 ]
-             ]
+            ]
         ]
 
     meta = MetaJsonParser()
     meta_layers = meta.layer_parser(EXAMPLE_3)
     assert meta_layers == output_data
+
+
+def test_layer_parser_empty():
+    meta = MetaJsonParser()
+    meta_layers = meta.layer_parser({})
+    assert meta_layers == []
 
 
 def test_layer_processing():
@@ -188,7 +218,8 @@ def test_layer_processing():
                 ["layer2_c", [["layer3_a", []], ["layer3_b", []]]],
                 ["layer2_d", [["layer3_c", [["layer4_a", []]]]]]
                 ]
-             ]
+            ],
+            []
         ]
     
     output_data = [
@@ -201,6 +232,12 @@ def test_layer_processing():
     meta = MetaJsonParser()
     meta_layers = meta.layer_processing(input_data)
     assert meta_layers == output_data
+
+
+def test_layer_processing_empty():
+    meta = MetaJsonParser()
+    meta_layers = meta.layer_processing([])
+    assert meta_layers == []
 
 
 def test_layers_retrieval():

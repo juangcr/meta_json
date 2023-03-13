@@ -3,18 +3,28 @@ from meta_json.meta_json_parser import MetaJsonParser
 
 
 class MetaJson:
+    """MetaJson main module."""
+
     def __init__(self, response: Union[Dict, List]):
+        """Run all parsers in constructor."""
+
         parser = MetaJsonParser()
-        self.__types = parser.types_parser(response)
-        self.__attributes = parser.attribute_parser(response)
+        self._types = parser.types_parser(response)
+        self._attributes = parser.attribute_parser(response)
         layers = parser.layer_processing(parser.layer_parser(response))
-        self.__layers = parser.layers_retrieval(layers)
+        self._layers = parser.layers_retrieval(layers)
 
+    @property
     def types(self):
-        return self.__types
+        """Return types result."""
+        return self._types
 
+    @property
     def attributes(self):
-        return self.__attributes
+        """Return attributes result."""
+        return self._attributes
 
+    @property
     def layers(self):
-        return self.__layers
+        """Return layers result."""
+        return self._layers
