@@ -12,14 +12,17 @@ This package is intended to help with JSON analysis by extracting its metadata a
 
 This package is available in PyPI and GitHub. Just run:
 
+```python
   pip install meta-json
+```
 
 Or clone the repository:
 
+```console
   git clone https://github.com/juangcr/meta_json.git 
   cd meta_json
   python setup.py install
-
+```
 
 ## Usage
 
@@ -44,6 +47,7 @@ Or clone the repository:
   meta.types  # Returns every data type available.
 ```
 
+```console
   {
     "name": "str",
     "contact": "str", 
@@ -56,12 +60,13 @@ Or clone the repository:
         }
     }
   }
-
+```
 
 ```python
   meta.attributes  # Returns a list with the main keys and all subkeys.
 ```
 
+```console
   [
     [
       "name",
@@ -76,12 +81,13 @@ Or clone the repository:
       "remaining"
     ]
   ]
-
+```
 
 ```python
   meta.layers  # Returns all keys grouped by layer depth.
 ```
 
+```console
   {
     "layer_0" :[
       "name",
@@ -98,4 +104,5 @@ Or clone the repository:
       "remaining"
     ]
   ]
+```
 
