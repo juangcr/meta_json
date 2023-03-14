@@ -79,7 +79,7 @@ Or clone the repository:
 
 
 ```python
-  meta.layers  # Returns keys grouped by layer depth.
+  meta.layers  # Returns all keys grouped by layer depth.
 ```
 
   {
