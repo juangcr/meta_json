@@ -10,7 +10,7 @@ def get_long_description():
 
 setup(
     name="meta-json",
-    version="0.0.2",
+    version="0.0.3",
     description="Extract metadata from a deserialized JSON.",
     long_description=get_long_description(),
     long_description_content_type="text/markdown",

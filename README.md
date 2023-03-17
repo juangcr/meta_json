@@ -62,9 +62,9 @@ Or clone the repository:
   }
 ```
 
-Keep in mind that the datetime recognition only supports the following formats:
+Keep in mind that the datetime recognition supports the following patterns:
 
-- YYYY-MM-DD
+- YYYY-MM-DD (Single supported pattern in v0.0.2)
 - YYYY/MM/DD
 - DD-MM-YYYY
 - DD/MM/YYYY
