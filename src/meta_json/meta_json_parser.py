@@ -20,7 +20,12 @@ class MetaJsonParser:
         bool
             True if a datetime, false otherwise.
         """
-        rgx = re.compile(r"\d{4}\-[0-1]\d\-[0-3]\d")
+        re_list = [
+            r"(\d{4}(\-|\/)(0\d|1[0-2])(\-|\/)(0\d|1\d|2\d|3[0-1]))",
+            r"((0\d|1\d|2\d|3[0-1])(\-|\/)(0\d|1[0-2])(\-|\/)\d{4})",
+            r"((0\d|1[0-2])(\-|\/)(0\d|1\d|2\d|3[0-1])(\-|\/)\d{4})",
+        ]
+        rgx = re.compile("|".join(re_list))
         return bool(re.match(rgx, value))
 
     def types_parser(self, response: Any) -> Union[Union[Dict, List], str]:
