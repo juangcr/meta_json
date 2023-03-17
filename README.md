@@ -62,8 +62,18 @@ Or clone the repository:
   }
 ```
 
+Keep in mind that the datetime recognition only supports the following formats:
+
+- YYYY-MM-DD
+- YYYY/MM/DD
+- DD-MM-YYYY
+- DD/MM/YYYY
+- MM-DD-YYYY
+- MM/DD/YYYY
+
 ```python
-  meta.attributes  # Returns a list with the main keys and all subkeys.
+  meta.attributes  # Returns a list with two elements: the grouped main keys
+                   # and the rest of the subkeys alltogether.
 ```
 
 ```console

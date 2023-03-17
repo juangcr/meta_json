@@ -49,14 +49,18 @@ EXAMPLE_3 = {
 
 def test_datetimes():
     data = [
-	    "2014-12-09T13:50:51.644000Z",
-	    "2014-12-20T21:17:56.891000Z",
+	    "2014-12-19T13:50:51.644000Z",
+	    "2014/12/20 21:17:56",
+	    "21-12-2014 22:54:00",
+	    "22/12/2014",
+	    "12-23-2014 12:34:56 EST",
+	    "12/24/2014",
 	    "https://api.dev/api/1/"
         ]
 
     meta = MetaJsonParser()
     results = [meta._parse_datetimes(d) for d in data]
-    assert results == [True, True, False] 
+    assert results == [True, True, True, True, True, True, False] 
 
 
 def test_flat_list():

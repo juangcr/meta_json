@@ -2,7 +2,7 @@ import pytest
 import json
 from pathlib import Path
 from datetime import datetime
-from meta_json.meta_json import MetaJson
+from meta_json import MetaJson
 
 def test_integration():
     
