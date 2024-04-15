@@ -1,6 +1,8 @@
 import pytest
-from src.meta_json.meta_json_parser import MetaJsonParser
+from meta_json.meta_json_parser import MetaJsonParser
 
+
+"""Read the TESTING.md document for more information."""
 
 EXAMPLE_1 = [
 	"item_1",
