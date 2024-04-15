@@ -1,5 +1,5 @@
 from typing import Dict, List, Union
-from meta_json.meta_json_parser import MetaJsonParser
+from meta_json_parser import MetaJsonParser
 
 
 class MetaJson:
