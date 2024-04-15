@@ -1,8 +1,10 @@
 import pytest
-from src.meta_json.meta_json import MetaJson
+from meta_json import MetaJson
 
 
 def test_meta_json_empty():
+    """Read the TESTING.md document for more information.
+    """
     meta = MetaJson({})
     assert meta.types == {}
     assert meta.attributes == [[], []]
