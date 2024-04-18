@@ -6,6 +6,6 @@ def test_meta_json_empty():
     """Read the TESTING.md document for more information.
     """
     meta = MetaJson({})
-    assert meta.types == {}
-    assert meta.attributes == [[], []]
-    assert meta.layers == {}
+    assert meta.types() == {}
+    assert meta.attributes() == [[], []]
+    assert meta.layers() == {}

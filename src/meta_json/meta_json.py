@@ -8,23 +8,20 @@ class MetaJson:
     def __init__(self, response: Union[Dict, List]):
         """Run all parsers in constructor."""
 
-        parser = MetaJsonParser()
-        self._types = parser.types_parser(response)
-        self._attributes = parser.attribute_parser(response)
-        layers = parser.layer_processing(parser.layer_parser(response))
-        self._layers = parser.layers_retrieval(layers)
+        self.response = response
+        self.__parser = MetaJsonParser()
 
-    @property
-    def types(self):
-        """Return types result."""
-        return self._types
-
-    @property
     def attributes(self):
         """Return attributes result."""
-        return self._attributes
+        return self.__parser.attribute_parser(self.response)
 
-    @property
     def layers(self):
         """Return layers result."""
-        return self._layers
+        layers = self.__parser.layer_processing(
+            self.__parser.layer_parser(self.response)
+        )
+        return self.__parser.layers_retrieval(layers)
+
+    def types(self):
+        """Return types result."""
+        return self.__parser.types_parser(self.response)

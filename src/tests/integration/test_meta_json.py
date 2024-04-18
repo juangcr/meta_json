@@ -20,21 +20,30 @@ def test_integration():
         meta = MetaJson(json_data)
         t2 = default_timer()
 
-        print(f"\nLapse : {t2 - t1} seconds.\n")
+        print(f"\n Object definition lapse : {t2 - t1} seconds.\n")
 
+        t1 = default_timer()
         with open(f"{json_path}/sample_types.json", "w",
                   encoding="utf-8") as j:
             j.write(f"// Lapse : {t2 - t1} seconds.\n")
-            j.write(str(meta.types))
+            j.write(str(meta.types()))
+        t2 = default_timer()
+        print(f"\nMeta types lapse : {t2 - t1} seconds.\n")
 
+        t1 = default_timer()
         with open(f"{json_path}/sample_attrs.json", "w",
                   encoding="utf-8") as j:
             j.write(f"// Lapse : {t2 - t1} seconds.\n")
-            j.write(str(meta.attributes))
+            j.write(str(meta.attributes()))
+        t2 = default_timer()
+        print(f"\nMeta attributes lapse : {t2 - t1} seconds.\n")
 
+        t1 = default_timer()
         with open(f"{json_path}/sample_layers.json", "w",
                   encoding="utf-8") as j:
             j.write(f"// Lapse : {t2 - t1} seconds.\n")
-            j.write(str(meta.layers))
+            j.write(str(meta.layers()))
+        t2 = default_timer()
+        print(f"\nMeta layers lapse : {t2 - t1} seconds.\n")
 
         assert True
