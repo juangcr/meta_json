@@ -1,5 +1,7 @@
 from typing import Dict, List, Union
-from meta_json.meta_json_parser import MetaJsonParser
+from meta_json.attribute_parser import AttributesParser
+from meta_json.layer_parser import LayersParser
+from meta_json.type_parser import TypesParser
 
 
 class MetaJson:
@@ -7,24 +9,20 @@ class MetaJson:
 
     def __init__(self, response: Union[Dict, List]):
         """Run all parsers in constructor."""
+        self.response = response
 
-        parser = MetaJsonParser()
-        self._types = parser.types_parser(response)
-        self._attributes = parser.attribute_parser(response)
-        layers = parser.layer_processing(parser.layer_parser(response))
-        self._layers = parser.layers_retrieval(layers)
-
-    @property
-    def types(self):
-        """Return types result."""
-        return self._types
-
-    @property
     def attributes(self):
         """Return attributes result."""
-        return self._attributes
+        ap = AttributesParser()
+        return ap.attribute_parser(self.response)
 
-    @property
     def layers(self):
         """Return layers result."""
-        return self._layers
+        lp = LayersParser()
+        layers = lp.layer_processing(lp.layer_parser(self.response))
+        return lp.layers_retrieval(layers)
+
+    def types(self):
+        """Return types result."""
+        tp = TypesParser()
+        return tp.type_parser(self.response)

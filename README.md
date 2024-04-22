@@ -44,7 +44,7 @@ Or clone the repository:
 
   meta = MetaJson(your_json_data_as_dict)
   
-  meta.types  # Returns every data type available.
+  meta.types()  # Returns every data type available.
 ```
 
 ```console
@@ -64,7 +64,7 @@ Or clone the repository:
 
 Keep in mind that the datetime recognition supports the following patterns:
 
-- YYYY-MM-DD (Single supported pattern in v0.0.2)
+- YYYY-MM-DD
 - YYYY/MM/DD
 - DD-MM-YYYY
 - DD/MM/YYYY
@@ -72,7 +72,7 @@ Keep in mind that the datetime recognition supports the following patterns:
 - MM/DD/YYYY
 
 ```python
-  meta.attributes  # Returns a list with two elements: the grouped main keys
+  meta.attributes()  # Returns a list with two elements: the grouped main keys
                    # and the rest of the subkeys alltogether.
 ```
 
@@ -94,7 +94,7 @@ Keep in mind that the datetime recognition supports the following patterns:
 ```
 
 ```python
-  meta.layers  # Returns all keys grouped by layer depth.
+  meta.layers()  # Returns all keys grouped by layer depth.
 ```
 
 ```console
