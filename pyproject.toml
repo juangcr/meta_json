@@ -1,27 +1,33 @@
 [build-system]
-requires = ["setuptools"]
-build-backend = "setuptools.build_meta"
+requires = ["uv_build >= 0.9.9"]
+build-backend = "uv_build"
+
+[tool.uv.build-backend]
+module-name = "meta_json"
+module-root = "src"
 
 [project]
-name = "meta_json"
-version = "1.0.0"
-requires-python = ">=3.8"
-authors = [{name = "Juan Cortés", email="juang.cortes@outlook.com"}] 
+name = "meta-json"
+version = "1.0.1"
 description = "Extract metadata from a deserialized JSON."
 readme = 'README.md'
-license = {file = "LICENSE"}
+requires-python = ">=3.10"
+authors = [{name = "Juan Cortés", email="juang.cortes@outlook.com"}] 
+license-files = ["LICENSE"]
 keywords = ["metadata", "json"]
 classifiers = [
-    "Development Status :: 4 - Beta",
-    "License :: OSI Approved :: BSD License",
-    "Programming Language :: Python :: 3.8",
-    "Programming Language :: Python :: 3.9",
-    "Programming Language :: Python :: 3.10",
-    "Programming Language :: Python :: 3.11",
-    "Programming Language :: Python :: 3.12",
-    "Operating System :: OS Independent"
+    "Intended Audience :: Developers",
+    "Topic :: Software Development :: Build Tools",
+    "Programming Language :: Python",
 ]
+dependencies = []
 
 [project.urls]
 Repository = "https://github.com/juangcr/meta_json"
 
+[dependency-groups]
+dev = [
+    "coverage>=7.12.0",
+    "pytest>=9.0.1",
+    "ruff>=0.14.6",
+]
